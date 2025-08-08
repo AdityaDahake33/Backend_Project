@@ -7,6 +7,7 @@ const connectDB = require('./Config/DB');
 connectDB();
 const cookieParser = require('cookie-parser');
 const indexRoute = require('./Routes/index.route');
+const uploadRoute = require('./Routes/upload.route');
 
 
 
@@ -20,6 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/', indexRoute);
 app.use('/user', UserRoute);
+app.use('/', uploadRoute);
 
 
 app.listen(3000, () => {

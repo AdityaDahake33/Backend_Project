@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Upload File | Home</title>
+    <title>Pro Gallery Uploader</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -11,37 +11,86 @@
     <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
     <style>
         body {
-            background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+            background: #fff;
         }
-        .dropzone-active {
-            border-color: #6366f1 !important;
-            background: #eef2ff !important;
+        .gallery-img {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .gallery-img:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 32px 0 rgba(99,102,241,0.18);
         }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center">
+<body class="min-h-screen flex flex-col items-center bg-white">
 
-    <div class="w-full max-w-md mx-auto bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center gap-6">
-        <h1 class="text-3xl font-bold text-gray-800 mb-2">Upload Your File</h1>
-        <p class="text-gray-500 mb-4 text-center">Drag & drop your file here, or click to select. <br>Supported: <span class="font-semibold">SVG, PNG, JPG, GIF</span> (max 800x400px)</p>
-        
-        <form id="uploadForm" enctype="multipart/form-data" class="w-full">
-            <label for="dropzone-file" id="dropzone" class="flex flex-col items-center justify-center w-full h-56 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer bg-gray-50 transition-all duration-200 hover:border-indigo-500 hover:bg-indigo-50">
-                <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                    <svg class="w-12 h-12 mb-4 text-indigo-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
-                    </svg>
-                    <span class="mb-2 text-lg text-indigo-500 font-semibold">Click to upload</span>
-                    <span class="text-xs text-gray-400">or drag and drop</span>
+    <!-- Header -->
+    <header class="w-full flex items-center justify-between px-12 py-8 border-b border-gray-200">
+        <h1 class="text-2xl font-bold text-gray-900">Pro Gallery Uploader</h1>
+        <button data-modal-target="uploadModal" data-modal-toggle="uploadModal"
+            class="bg-indigo-600 text-white font-semibold rounded-lg shadow px-6 py-2 hover:bg-indigo-700 transition-all">
+            Upload
+        </button>
+    </header>
+
+    <!-- Modal -->
+    <div id="uploadModal" tabindex="-1" aria-hidden="true"
+        class="hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-40">
+        <div class="relative w-full max-w-md mx-auto bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center gap-6">
+            <button type="button" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+                data-modal-hide="uploadModal">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <h2 class="text-2xl font-bold text-indigo-700 mb-2">Upload Your File</h2>
+            <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data" class="w-full flex flex-col md:flex-row gap-6 items-start">
+                <div class="flex-1 w-full">
+                    <label for="dropzone-file" id="dropzone"
+                        class="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer bg-gray-50 transition-all duration-200 hover:border-indigo-500 hover:bg-indigo-50">
+                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                            <svg class="w-10 h-10 mb-2 text-indigo-400" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                            </svg>
+                            <span class="mb-2 text-base text-indigo-500 font-semibold">Click to upload</span>
+                            <span class="text-xs text-gray-400">or drag and drop</span>
+                        </div>
+                        <input id="dropzone-file" name="file" type="file" class="hidden"
+                            accept=".svg,.png,.jpg,.jpeg,.gif" />
+                    </label>
+                    <button type="submit"
+                        class="mt-6 w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded-lg shadow hover:bg-indigo-700 transition-all">Upload</button>
                 </div>
-                <input id="dropzone-file" name="file" type="file" class="hidden" accept=".svg,.png,.jpg,.jpeg,.gif" />
-            </label>
-            <button type="submit" class="mt-6 w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded-lg shadow hover:bg-indigo-700 transition-all">Upload</button>
-        </form>
-        <div id="preview" class="mt-4"></div>
+                <div id="preview" class="flex-1 w-full flex items-center justify-center"></div>
+            </form>
+        </div>
     </div>
 
-    <!-- Flowbite JS -->
+    <!-- Gallery Section -->
+    <main class="w-full max-w-6xl mx-auto py-16 px-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-12">
+            <% if (files && files.length > 0) { %>
+                <% files.forEach(file => { %>
+                    <div class="flex flex-col items-center">
+                        <div class="w-full aspect-square overflow-hidden rounded-lg bg-gray-100 flex items-center justify-center">
+                            <img src="<%= file.path %>" alt="<%= file.originalname %>" class="gallery-img w-full h-full object-cover" />
+                        </div>
+                        <div class="mt-4 text-lg font-medium text-gray-900 text-center">
+                            <%= file.originalname %>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <div class="col-span-full text-center text-gray-400 text-lg">No images uploaded yet.</div>
+            <% } %>
+        </div>
+    </main>
+
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
     <script>
         // Drag & Drop highlight
@@ -64,25 +113,23 @@
             if (input.files[0]) showPreview(input.files[0]);
         });
 
-        // Preview image
+        // Responsive contraction after upload
         function showPreview(file) {
             const preview = document.getElementById('preview');
+            const uploadForm = document.getElementById('uploadForm');
             if (file && file.type.startsWith('image/')) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    preview.innerHTML = `<img src="${e.target.result}" class="max-h-40 rounded-lg shadow mt-2 mx-auto" alt="Preview" />`;
+                reader.onload = function (e) {
+                    preview.innerHTML = `<img src="${e.target.result}" class="max-h-40 rounded-lg shadow mx-auto" alt="Preview" />`;
+                    // Contract upload section on preview
+                    uploadForm.classList.add('md:max-w-xs');
                 }
                 reader.readAsDataURL(file);
             } else {
                 preview.innerHTML = '';
+                uploadForm.classList.remove('md:max-w-xs');
             }
         }
-
-        // Optional: handle form submit (AJAX or normal POST)
-        document.getElementById('uploadForm').addEventListener('submit', function(e) {
-            // e.preventDefault(); // Uncomment for AJAX upload
-            // Add your upload logic here
-        });
     </script>
 </body>
 </html>
