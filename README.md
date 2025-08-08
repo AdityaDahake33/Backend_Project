@@ -79,6 +79,11 @@ If you encounter issues with your deployment:
 
 4. Check that your Cloudinary credentials are correct
 
+5. If you see a "Cannot GET /" error:
+   - Make sure the root route is properly configured in app.js
+   - Verify that the vercel.json file has the correct route configuration
+   - Try accessing /user/login directly to see if the login page works
+
 ## Local Development
 
 1. Clone the repository

@@ -19,6 +19,11 @@ app.use(express.urlencoded({ extended: true }));
 
 
 
+// Add root route to redirect to login page
+app.get('/', (req, res) => {
+    res.redirect('/user/login');
+});
+
 app.use('/', indexRoute);
 app.use('/user', UserRoute);
 app.use('/', uploadRoute);
