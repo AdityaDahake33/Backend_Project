@@ -84,6 +84,21 @@ If you encounter issues with your deployment:
    - Verify that the vercel.json file has the correct route configuration
    - Try accessing /user/login directly to see if the login page works
 
+6. If you see an "Internal Server Error":
+   - **Check your MongoDB connection string**: Make sure you're using a MongoDB Atlas connection string (not a local database URL like `mongodb://0.0.0.0/men-drive`)
+   - The connection string should look like: `mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<database>?retryWrites=true&w=majority`
+   - Verify that your MongoDB Atlas user has the correct permissions
+   - Check if your IP address is whitelisted in MongoDB Atlas
+   - See the detailed guides below for more help
+
+### Additional Documentation
+
+For more detailed instructions and troubleshooting, refer to these guides:
+
+- [MongoDB Atlas Setup Guide](./MONGODB_ATLAS_SETUP.md) - Step-by-step instructions for setting up MongoDB Atlas
+- [Troubleshooting Guide](./TROUBLESHOOTING.md) - Comprehensive troubleshooting steps for common issues
+- [Vercel CLI Deployment Guide](./VERCEL_CLI_DEPLOYMENT.md) - Alternative deployment method using Vercel CLI
+
 ## Local Development
 
 1. Clone the repository
