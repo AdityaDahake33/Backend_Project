@@ -5,16 +5,20 @@ const dotenv = require('dotenv');
 dotenv.config();
 const connectDB = require('./Config/DB');
 connectDB();
+const cookieParser = require('cookie-parser');
+const indexRoute = require('./Routes/index.route');
+
 
 
 //Middleware
 app.set('view engine','ejs');
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 
 
-
+app.use('/', indexRoute);
 app.use('/user', UserRoute);
 
 
