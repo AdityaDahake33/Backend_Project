@@ -9,134 +9,270 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Flowbite CSS -->
     <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
         body {
-            background: #fff;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            min-height: 100vh;
         }
         .gallery-img {
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.3s, box-shadow 0.3s;
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
         }
         .gallery-img:hover {
             transform: scale(1.03);
-            box-shadow: 0 8px 32px 0 rgba(99,102,241,0.18);
+            box-shadow: 0 10px 40px 0 rgba(99,102,241,0.2);
+        }
+        .card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+        }
+        .image-container {
+            aspect-ratio: 1/1;
+            overflow: hidden;
+            position: relative;
+        }
+        .image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(79, 70, 229, 0.1);
+            opacity: 0;
+            transition: opacity 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card:hover .image-overlay {
+            opacity: 1;
+        }
+        .action-button {
+            transition: all 0.2s;
+        }
+        .action-button:hover {
+            transform: scale(1.1);
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center bg-white">
+<body class="min-h-screen flex flex-col">
 
     <!-- Header -->
-    <header class="w-full flex items-center justify-between px-12 py-8 border-b border-gray-200">
-        <h1 class="text-2xl font-bold text-gray-900">Pro Gallery Uploader</h1>
-        <button data-modal-target="uploadModal" data-modal-toggle="uploadModal"
-            class="bg-indigo-600 text-white font-semibold rounded-lg shadow px-6 py-2 hover:bg-indigo-700 transition-all">
-            Upload
-        </button>
+    <header class="w-full bg-white shadow-sm sticky top-0 z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center">
+                    <i class="fas fa-cloud-upload-alt text-indigo-600 text-3xl mr-3"></i>
+                    <h1 class="text-2xl font-bold text-gray-900">Pro Gallery Uploader</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button data-modal-target="uploadModal" data-modal-toggle="uploadModal"
+                        class="bg-indigo-600 text-white font-semibold rounded-lg shadow-md px-6 py-2.5 hover:bg-indigo-700 transition-all flex items-center">
+                        <i class="fas fa-plus mr-2"></i>
+                        Upload New
+                    </button>
+                </div>
+            </div>
+        </div>
     </header>
 
-    <!-- Modal -->
+    <!-- Upload Modal -->
     <div id="uploadModal" tabindex="-1" aria-hidden="true"
-        class="hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-40">
-        <div class="relative w-full max-w-md mx-auto bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center gap-6">
-            <button type="button" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+        class="hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
+        <div class="relative w-full max-w-lg mx-auto bg-white rounded-2xl shadow-2xl p-8 flex flex-col items-center gap-6 transform transition-all">
+            <button type="button" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 focus:outline-none"
                 data-modal-hide="uploadModal">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M6 18L18 6M6 6l12 12" />
-                </svg>
+                <i class="fas fa-times text-xl"></i>
             </button>
-            <h2 class="text-2xl font-bold text-indigo-700 mb-2">Upload Your File</h2>
+            <div class="text-center">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-indigo-100 mb-4">
+                    <i class="fas fa-cloud-upload-alt text-indigo-600 text-2xl"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-900 mb-1">Upload Your Image</h2>
+                <p class="text-gray-500 mb-6">Share your beautiful images with the world</p>
+            </div>
+            
             <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data" class="w-full flex flex-col md:flex-row gap-6 items-start">
                 <div class="flex-1 w-full">
                     <label for="dropzone-file" id="dropzone"
-                        class="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer bg-gray-50 transition-all duration-200 hover:border-indigo-500 hover:bg-indigo-50">
+                        class="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-indigo-300 rounded-xl cursor-pointer bg-indigo-50 transition-all duration-200 hover:border-indigo-500 hover:bg-indigo-100">
                         <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                            <svg class="w-10 h-10 mb-2 text-indigo-400" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
-                            </svg>
-                            <span class="mb-2 text-base text-indigo-500 font-semibold">Click to upload</span>
-                            <span class="text-xs text-gray-400">or drag and drop</span>
+                            <i class="fas fa-cloud-upload-alt text-4xl text-indigo-500 mb-3"></i>
+                            <p class="mb-2 text-base text-indigo-600 font-semibold">Click to upload</p>
+                            <p class="text-xs text-gray-500">or drag and drop</p>
+                            <p class="text-xs text-gray-500 mt-1">SVG, PNG, JPG or GIF</p>
                         </div>
                         <input id="dropzone-file" name="file" type="file" class="hidden"
                             accept=".svg,.png,.jpg,.jpeg,.gif" />
                     </label>
                     <button type="submit"
-                        class="mt-6 w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded-lg shadow hover:bg-indigo-700 transition-all">Upload</button>
+                        class="mt-6 w-full py-3 px-4 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition-all flex items-center justify-center">
+                        <i class="fas fa-upload mr-2"></i>
+                        Upload Image
+                    </button>
                 </div>
-                <div id="preview" class="flex-1 w-full flex items-center justify-center"></div>
+                <div id="preview" class="flex-1 w-full flex items-center justify-center rounded-lg overflow-hidden"></div>
             </form>
         </div>
     </div>
 
     <!-- Gallery Section -->
-    <main class="w-full max-w-6xl mx-auto py-16 px-8">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-12">
-            <% if (files && files.length > 0) { %>
+    <main class="w-full max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div class="mb-10">
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">Your Gallery</h2>
+            <p class="text-gray-600">Manage and share your beautiful images</p>
+        </div>
+        
+        <% if (files && files.length > 0) { %>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
                 <% files.forEach(file => { %>
-                    <div class="flex flex-col items-center">
-                        <div class="w-full aspect-square overflow-hidden rounded-lg bg-gray-100 flex items-center justify-center">
-                            <img src="<%= file.path %>" alt="<%= file.originalname %>" class="gallery-img w-full h-full object-cover" />
+                    <div class="card">
+                        <div class="image-container">
+                            <img src="<%= file.path %>" alt="<%= file.originalname %>" class="gallery-img" />
+                            <div class="image-overlay">
+                                <div class="flex space-x-4">
+                                    <a href="/download/<%= encodeURIComponent(file.path) %>" class="action-button bg-white p-3 rounded-full text-indigo-600 hover:text-indigo-800 shadow-lg" title="Download">
+                                        <i class="fas fa-download"></i>
+                                    </a>
+                                    <a href="/delete/<%= file._id %>" class="action-button bg-white p-3 rounded-full text-red-600 hover:text-red-800 shadow-lg" title="Delete" onclick="return confirm('Are you sure you want to delete this image?')">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                        <div class="mt-4 text-lg font-medium text-gray-900 text-center">
-                            <%= file.originalname %>
+                        <div class="p-4">
+                            <h3 class="text-lg font-medium text-gray-900 truncate" title="<%= file.originalname %>">
+                                <%= file.originalname %>
+                            </h3>
+                            <div class="flex items-center justify-between mt-2">
+                                <span class="text-sm text-gray-500">
+                                    <i class="far fa-calendar-alt mr-1"></i>
+                                    <%= new Date(file.uploadedAt).toLocaleDateString() %>
+                                </span>
+                                <div class="flex space-x-2">
+                                    <a href="/download/<%= encodeURIComponent(file.path) %>" class="text-indigo-600 hover:text-indigo-800 transition" title="Download">
+                                        <i class="fas fa-download"></i>
+                                    </a>
+                                    <a href="/delete/<%= file._id %>" class="text-red-600 hover:text-red-800 transition" title="Delete" onclick="return confirm('Are you sure you want to delete this image?')">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                        <a href="/download/<%= encodeURIComponent(file.path) %>" class="mt-2 flex items-center text-indigo-600 hover:text-indigo-800 transition" title="Download">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 12v6m0 0l-3-3m3 3l3-3M12 6v6" />
-                            </svg>
-                            Download
-                        </a>
                     </div>
                 <% }) %>
-            <% } else { %>
-                <div class="col-span-full text-center text-gray-400 text-lg">No images uploaded yet.</div>
-            <% } %>
-        </div>
+            </div>
+        <% } else { %>
+            <div class="flex flex-col items-center justify-center py-20 bg-white rounded-2xl shadow-sm border border-gray-100">
+                <div class="text-center">
+                    <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-indigo-100 mb-6">
+                        <i class="fas fa-images text-indigo-600 text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">No images uploaded yet</h3>
+                    <p class="text-gray-500 mb-6">Upload your first image to get started</p>
+                    <button data-modal-target="uploadModal" data-modal-toggle="uploadModal"
+                        class="bg-indigo-600 text-white font-semibold rounded-lg shadow-md px-6 py-3 hover:bg-indigo-700 transition-all flex items-center mx-auto">
+                        <i class="fas fa-plus mr-2"></i>
+                        Upload Now
+                    </button>
+                </div>
+            </div>
+        <% } %>
     </main>
 
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
     <script>
-        // Drag & Drop highlight
+        // Drag & Drop functionality
         const dropzone = document.getElementById('dropzone');
         const input = document.getElementById('dropzone-file');
+        
+        // Add active class on drag over
         dropzone.addEventListener('dragover', (e) => {
             e.preventDefault();
-            dropzone.classList.add('dropzone-active');
+            dropzone.classList.add('border-indigo-500', 'bg-indigo-100');
         });
+        
+        // Remove active class on drag leave
         dropzone.addEventListener('dragleave', () => {
-            dropzone.classList.remove('dropzone-active');
+            dropzone.classList.remove('border-indigo-500', 'bg-indigo-100');
         });
+        
+        // Handle file drop
         dropzone.addEventListener('drop', (e) => {
             e.preventDefault();
-            dropzone.classList.remove('dropzone-active');
+            dropzone.classList.remove('border-indigo-500', 'bg-indigo-100');
             input.files = e.dataTransfer.files;
             showPreview(input.files[0]);
         });
+        
+        // Handle file selection
         input.addEventListener('change', () => {
             if (input.files[0]) showPreview(input.files[0]);
         });
 
-        // Responsive contraction after upload
+        // Show image preview
         function showPreview(file) {
             const preview = document.getElementById('preview');
             const uploadForm = document.getElementById('uploadForm');
+            
             if (file && file.type.startsWith('image/')) {
                 const reader = new FileReader();
                 reader.onload = function (e) {
-                    preview.innerHTML = `<img src="${e.target.result}" class="max-h-40 rounded-lg shadow mx-auto" alt="Preview" />`;
+                    preview.innerHTML = `
+                        <div class="relative w-full h-full rounded-lg overflow-hidden shadow-lg border border-indigo-100">
+                            <img src="${e.target.result}" class="w-full h-full object-cover" alt="Preview" />
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-indigo-900/70 to-transparent p-3">
+                                <p class="text-white text-sm truncate">${file.name}</p>
+                                <p class="text-indigo-100 text-xs">${(file.size / 1024).toFixed(1)} KB</p>
+                            </div>
+                        </div>
+                    `;
                     // Contract upload section on preview
                     uploadForm.classList.add('md:max-w-xs');
                 }
                 reader.readAsDataURL(file);
+            } else if (file) {
+                // Not an image file
+                preview.innerHTML = `
+                    <div class="w-full h-full flex items-center justify-center p-6 bg-red-50 rounded-lg border border-red-100">
+                        <div class="text-center">
+                            <i class="fas fa-exclamation-circle text-red-500 text-3xl mb-2"></i>
+                            <p class="text-red-600">Not a valid image file</p>
+                            <p class="text-red-400 text-sm mt-1">Please select an image file</p>
+                        </div>
+                    </div>
+                `;
             } else {
                 preview.innerHTML = '';
                 uploadForm.classList.remove('md:max-w-xs');
             }
         }
+        
+        // Add animation to cards
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 100 * index);
+            });
+        });
     </script>
 </body>
 </html>

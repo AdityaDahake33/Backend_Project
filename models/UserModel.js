@@ -7,7 +7,7 @@ const userSchema = new Mongoose.Schema({
         unique: true,
         trim: true,
         lowercase : true,
-        minlength: [10, "Username must be at least 3 characters long"],
+        minlength: [3, "Username must be at least 3 characters long"],
     },
     email: {
         type: String,
@@ -15,14 +15,13 @@ const userSchema = new Mongoose.Schema({
         unique: true,
         trim: true,
         lowercase : true,
-        minlength: [15, "Username must be at least 15 characters long"],
+        minlength: [15, "Email must be at least 15 characters long"],
     },
     password: {
         type: String,
         required: true,
         trim: true,
-        minlength: [10, "Username must be at least 10 characters long"],
-
+        minlength: [10, "Password must be at least 10 characters long"],
     }
 })
 
