@@ -83,6 +83,13 @@
                         <div class="mt-4 text-lg font-medium text-gray-900 text-center">
                             <%= file.originalname %>
                         </div>
+                        <a href="/download/<%= encodeURIComponent(file.path) %>" class="mt-2 flex items-center text-indigo-600 hover:text-indigo-800 transition" title="Download">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 12v6m0 0l-3-3m3 3l3-3M12 6v6" />
+                            </svg>
+                            Download
+                        </a>
                     </div>
                 <% }) %>
             <% } else { %>
