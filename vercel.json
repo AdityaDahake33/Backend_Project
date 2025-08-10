@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "functions": {
+    "app.js": {
+      "runtime": "nodejs18.x",
+      "includeFiles": "views/**"
+    }
+  },
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "app.js"
+    }
+  ]
+}
