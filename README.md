@@ -51,6 +51,7 @@ You'll need the following environment variables for deployment:
    - Framework Preset: Select "Other"
    - Build Command: Leave empty (Vercel will use the settings in vercel.json)
    - Output Directory: Leave empty
+   - Ensure the `views` directory is included in your `vercel.json` configuration under `builds[0].config.includeFiles`.
    - Install Command: `npm install`
 
 6. Add Environment Variables:
@@ -90,6 +91,10 @@ If you encounter issues with your deployment:
    - Verify that your MongoDB Atlas user has the correct permissions
    - Check if your IP address is whitelisted in MongoDB Atlas
    - See the detailed guides below for more help
+
+7. If you encounter "Internal Server Error" related to missing view templates (e.g., "Failed to lookup view 'login' in views directory"), ensure:
+   - Your `vercel.json` includes `"config": { "includeFiles": ["views/**"] }` within the build configuration for `app.js`.
+   - Your `app.js` explicitly sets the views directory using `app.set('views', path.join(__dirname, 'views'));` and `const path = require('path');`.
 
 ### Additional Documentation
 

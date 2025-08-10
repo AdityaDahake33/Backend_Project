@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const path = require('path');
 const UserRoute = require('./Routes/user.routes');
 const dotenv = require('dotenv');
 dotenv.config();
@@ -13,6 +14,7 @@ const uploadRoute = require('./Routes/upload.route');
 
 //Middleware
 app.set('view engine','ejs');
+app.set('views', path.join(__dirname, 'views'));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
