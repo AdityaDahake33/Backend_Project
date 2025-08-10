@@ -7,7 +7,7 @@ const JWT = require('jsonwebtoken');
 
 
 router.get('/register', (req, res) => {
-    res.render('register', { errors: [], formData: {} });
+    res.render('register');
 })
 
 router.post('/register',
@@ -52,7 +52,7 @@ router.post('/register',
 
 
 router.get('/login', (req, res) => {
-    res.render('login', { errors: [], formData: {} });
+    res.render('login');
 })
 
 router.post('/login',

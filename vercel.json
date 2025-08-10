@@ -1,15 +1,19 @@
 {
   "version": 2,
-  "functions": {
-    "api/index.js": {
-      "runtime": "vercel-node@3.0.0",
-      "includeFiles": "views/**"
+  "builds": [
+    {
+      "src": "app.js",
+      "use": "@vercel/node"
     }
-  },
+  ],
   "routes": [
     {
-      "src": "/(.*)",
-      "dest": "/api/index.js"
+      "src": "/(.+)",
+      "dest": "app.js"
+    },
+    {
+      "src": "/",
+      "dest": "app.js"
     }
   ]
 }
